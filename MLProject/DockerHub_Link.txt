@@ -1,0 +1,1 @@
+https://hub.docker.com/repository/docker/diannazira/telco-churn-model/general
