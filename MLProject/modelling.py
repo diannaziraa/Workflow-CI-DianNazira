@@ -1,4 +1,3 @@
-```python
 import pandas as pd
 import mlflow
 import mlflow.sklearn
@@ -141,4 +140,3 @@ with mlflow.start_run():
     print(f"F1 Score  : {f1:.4f}")
 
 print("\nTraining selesai")
-```
