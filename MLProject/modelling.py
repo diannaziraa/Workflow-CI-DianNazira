@@ -8,7 +8,16 @@ from sklearn.metrics import (
     accuracy_score,
     precision_score,
     recall_score,
-    f1_score
+    f1_score,
+    classification_report
+)
+
+# =====================================
+# SET EXPERIMENT
+# =====================================
+
+mlflow.set_experiment(
+    "Telco_Churn_CI"
 )
 
 # =====================================
@@ -100,13 +109,17 @@ with mlflow.start_run():
     )
 
     # =====================================
-    # LOGGING MLFLOW
+    # LOG PARAMETER
     # =====================================
 
     mlflow.log_param(
         "n_estimators",
         100
     )
+
+    # =====================================
+    # LOG METRIC
+    # =====================================
 
     mlflow.log_metric(
         "accuracy",
@@ -128,15 +141,64 @@ with mlflow.start_run():
         f1
     )
 
+    # =====================================
+    # LOG MODEL KE MLFLOW
+    # =====================================
+
     mlflow.sklearn.log_model(
         model,
         "random_forest_model"
     )
 
+    # =====================================
+    # SIMPAN MODEL LOKAL
+    # UNTUK MLFLOW BUILD DOCKER
+    # =====================================
+
+    mlflow.sklearn.save_model(
+        sk_model=model,
+        path="model"
+    )
+
+    # =====================================
+    # CLASSIFICATION REPORT
+    # =====================================
+
+    report = classification_report(
+        y_test,
+        y_pred
+    )
+
+    with open(
+        "classification_report.txt",
+        "w"
+    ) as f:
+        f.write(report)
+
+    mlflow.log_artifact(
+        "classification_report.txt"
+    )
+
+    # =====================================
+    # HASIL
+    # =====================================
+
     print("\n===== HASIL EVALUASI =====")
-    print(f"Accuracy  : {accuracy:.4f}")
-    print(f"Precision : {precision:.4f}")
-    print(f"Recall    : {recall:.4f}")
-    print(f"F1 Score  : {f1:.4f}")
+
+    print(
+        f"Accuracy  : {accuracy:.4f}"
+    )
+
+    print(
+        f"Precision : {precision:.4f}"
+    )
+
+    print(
+        f"Recall    : {recall:.4f}"
+    )
+
+    print(
+        f"F1 Score  : {f1:.4f}"
+    )
 
 print("\nTraining selesai")
