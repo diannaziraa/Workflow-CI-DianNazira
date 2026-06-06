@@ -1,0 +1,46 @@
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+
+venv/
+.venv/
+env/
+
+# MLflow
+
+mlruns/
+
+# Jupyter
+
+.ipynb_checkpoints/
+
+# VS Code
+
+.vscode/
+
+# Environment Variables
+
+.env
+
+# Logs
+
+*.log
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Build
+
+build/
+dist/
+
+# Docker
+
+*.tar
