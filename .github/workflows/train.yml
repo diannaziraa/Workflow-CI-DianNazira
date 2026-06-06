@@ -14,13 +14,25 @@ jobs:
 
     steps:
 
+      # ==========================
+      # CHECKOUT REPOSITORY
+      # ==========================
+
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      # ==========================
+      # SETUP PYTHON
+      # ==========================
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      # ==========================
+      # INSTALL DEPENDENCIES
+      # ==========================
 
       - name: Install Dependencies
         run: |
@@ -29,10 +41,18 @@ jobs:
           pip install scikit-learn
           pip install matplotlib
 
+      # ==========================
+      # RUN TRAINING
+      # ==========================
+
       - name: Run Training
         run: |
           cd MLProject
           python modelling.py
+
+      # ==========================
+      # SAVE ARTIFACT
+      # ==========================
 
       - name: Upload MLflow Artifacts
         uses: actions/upload-artifact@v4
@@ -47,8 +67,8 @@ jobs:
       - name: Login Docker Hub
         uses: docker/login-action@v3
         with:
-          username: diannazira
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       # ==========================
       # BUILD DOCKER IMAGE
