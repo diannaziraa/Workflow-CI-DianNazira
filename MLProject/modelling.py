@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pandas as pd
 import mlflow
 import mlflow.sklearn
@@ -152,13 +155,18 @@ with mlflow.start_run():
 
     # =====================================
     # SIMPAN MODEL LOKAL
-    # UNTUK MLFLOW BUILD DOCKER
+    # UNTUK BUILD DOCKER
     # =====================================
+
+    if os.path.exists("model"):
+        shutil.rmtree("model")
 
     mlflow.sklearn.save_model(
         sk_model=model,
         path="model"
     )
+
+    print("Model berhasil disimpan ke folder 'model'")
 
     # =====================================
     # CLASSIFICATION REPORT
@@ -180,7 +188,7 @@ with mlflow.start_run():
     )
 
     # =====================================
-    # HASIL
+    # HASIL EVALUASI
     # =====================================
 
     print("\n===== HASIL EVALUASI =====")
