@@ -61,6 +61,14 @@ jobs:
           path: MLProject/mlruns
 
       # ==========================
+      # DEBUG SECRET
+      # ==========================
+
+      - name: Check Username Secret
+        run: |
+          echo "USERNAME=${{ secrets.DOCKER_HUB_USERNAME }}"
+
+      # ==========================
       # LOGIN DOCKER HUB
       # ==========================
 
