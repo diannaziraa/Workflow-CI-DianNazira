@@ -1,0 +1,15 @@
+name: telco-ci
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+
+  - pip
+
+  - pip:
+      - mlflow
+      - pandas
+      - scikit-learn
+      - matplotlib
