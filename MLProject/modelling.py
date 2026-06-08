@@ -4,20 +4,13 @@ import mlflow.sklearn
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    classification_report
-)
 
 # =====================================
-# LOAD DATASET
+# LOAD DATASET PREPROCESSING
 # =====================================
 
 print("=" * 50)
-print("MEMUAT DATASET")
+print("MEMUAT DATASET PREPROCESSING")
 print("=" * 50)
 
 df = pd.read_csv("telco_churn_preprocessing.csv")
@@ -44,13 +37,13 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # =====================================
-# AUTOLOG
+# ENABLE AUTOLOG
 # =====================================
 
 mlflow.autolog()
 
 # =====================================
-# TRAINING
+# TRAIN MODEL
 # =====================================
 
 model = RandomForestClassifier(
@@ -64,52 +57,15 @@ model.fit(
 )
 
 # =====================================
-# PREDIKSI
-# =====================================
-
-y_pred = model.predict(X_test)
-
-# =====================================
 # EVALUASI
 # =====================================
 
-accuracy = accuracy_score(
-    y_test,
-    y_pred
-)
-
-precision = precision_score(
-    y_test,
-    y_pred,
-    zero_division=0
-)
-
-recall = recall_score(
-    y_test,
-    y_pred,
-    zero_division=0
-)
-
-f1 = f1_score(
-    y_test,
-    y_pred,
-    zero_division=0
+score = model.score(
+    X_test,
+    y_test
 )
 
 print("\n===== HASIL EVALUASI =====")
-
-print(f"Accuracy  : {accuracy:.4f}")
-print(f"Precision : {precision:.4f}")
-print(f"Recall    : {recall:.4f}")
-print(f"F1 Score  : {f1:.4f}")
-
-print("\n===== CLASSIFICATION REPORT =====")
-
-print(
-    classification_report(
-        y_test,
-        y_pred
-    )
-)
+print(f"Accuracy : {score:.4f}")
 
 print("\nTraining selesai")
