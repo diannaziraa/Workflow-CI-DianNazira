@@ -1,49 +1,37 @@
 # Workflow-CI-DianNazira
 
-Proyek ini merupakan implementasi Workflow Continuous Integration (CI) untuk tugas akhir kelas **Membangun Sistem Machine Learning** Dicoding.
+Proyek ini dibuat untuk memenuhi submission MLOps Dicoding.
 
-## Tujuan
-
-Workflow ini digunakan untuk melakukan retraining model Machine Learning secara otomatis menggunakan GitHub Actions dan MLflow Project setiap kali terjadi perubahan pada repository.
-
-## Struktur Project
+## Struktur Proyek
 
 ```text
 Workflow-CI-DianNazira
-│
-├── .github
-│   └── workflows
-│       └── train.yml
-│
+├── .github/workflows
+│   └── train.yml
 ├── MLProject
 │   ├── modelling.py
 │   ├── conda.yaml
 │   ├── MLproject
-│   └── telco_churn_preprocessed.csv
-│
-├── Dockerfile
-└── README.md
+│   ├── telco_churn_preprocessed.csv
+│   └── DockerHub_Link.txt
+├── README.md
+└── .gitignore
 ```
 
-## Teknologi yang Digunakan
+## Workflow CI
 
-* Python
-* Scikit-Learn
-* MLflow
-* GitHub Actions
-* Docker
-* Docker Hub
+Workflow dijalankan secara otomatis menggunakan GitHub Actions setiap kali terdapat push ke branch `main`.
 
-## Workflow
+Tahapan workflow:
 
-1. Push ke branch main.
-2. GitHub Actions otomatis berjalan.
-3. MLflow menjalankan training model.
-4. Artefak model disimpan.
-5. Docker Image dibuat.
-6. Docker Image dikirim ke Docker Hub.
+1. Checkout repository
+2. Install dependency
+3. Training model
+4. Logging MLflow
+5. Upload artifact
+6. Build Docker Image
+7. Push Docker Image ke Docker Hub
 
-## Dataset
+## Docker Hub
 
-Dataset yang digunakan adalah Telco Customer Churn Dataset.
-
+https://hub.docker.com/repository/docker/diannazira/telco-churn-model/general

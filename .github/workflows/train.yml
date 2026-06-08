@@ -81,11 +81,12 @@ jobs:
       # ==========================
       # BUILD DOCKER IMAGE
       # ==========================
-
-      - name: Build Docker Image
+      - name: Build Docker Image with MLflow
         run: |
-          docker build -t diannazira/telco-churn-model:latest .
-
+          mlflow models build-docker \
+            -m MLProject/model \
+            -n diannazira/telco-churn-model
+      
       # ==========================
       # PUSH DOCKER IMAGE
       # ==========================

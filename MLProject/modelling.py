@@ -32,7 +32,7 @@ print("MEMUAT DATASET")
 print("=" * 50)
 
 df = pd.read_csv(
-    "telco_churn_preprocessed.csv"
+    "MLProject/telco_churn_preprocessed.csv"
 )
 
 print(f"Shape Dataset: {df.shape}")
