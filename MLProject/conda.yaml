@@ -1,11 +1,10 @@
-name: telco-ci
+name: telco-churn-env
 
 channels:
   - conda-forge
 
 dependencies:
   - python=3.11
-
   - pip
 
   - pip:
@@ -13,3 +12,4 @@ dependencies:
       - pandas
       - scikit-learn
       - matplotlib
+      - numpy
