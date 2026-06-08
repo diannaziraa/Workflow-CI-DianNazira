@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Training
         run: |
-             mlflow run MLProject
+              mlflow run MLProject --env-manager local
 
       # ==========================
       # SAVE ARTIFACT

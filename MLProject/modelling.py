@@ -1,6 +1,3 @@
-import os
-import shutil
-
 import pandas as pd
 import mlflow
 import mlflow.sklearn
@@ -16,14 +13,6 @@ from sklearn.metrics import (
 )
 
 # =====================================
-# SET EXPERIMENT
-# =====================================
-
-mlflow.set_experiment(
-    "Telco_Churn_CI"
-)
-
-# =====================================
 # LOAD DATASET
 # =====================================
 
@@ -31,9 +20,7 @@ print("=" * 50)
 print("MEMUAT DATASET")
 print("=" * 50)
 
-df = pd.read_csv(
-    "MLProject/telco_churn_preprocessed.csv"
-)
+df = pd.read_csv("telco_churn_preprocessing.csv")
 
 print(f"Shape Dataset: {df.shape}")
 
@@ -41,11 +28,7 @@ print(f"Shape Dataset: {df.shape}")
 # FEATURE & TARGET
 # =====================================
 
-X = df.drop(
-    "Churn",
-    axis=1
-)
-
+X = df.drop("Churn", axis=1)
 y = df["Churn"]
 
 # =====================================
@@ -61,152 +44,72 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # =====================================
+# AUTOLOG
+# =====================================
+
+mlflow.autolog()
+
+# =====================================
 # TRAINING
 # =====================================
 
-with mlflow.start_run():
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
 
-    model = RandomForestClassifier(
-        n_estimators=100,
-        random_state=42
-    )
+model.fit(
+    X_train,
+    y_train
+)
 
-    model.fit(
-        X_train,
-        y_train
-    )
+# =====================================
+# PREDIKSI
+# =====================================
 
-    # =====================================
-    # PREDIKSI
-    # =====================================
+y_pred = model.predict(X_test)
 
-    y_pred = model.predict(
-        X_test
-    )
+# =====================================
+# EVALUASI
+# =====================================
 
-    # =====================================
-    # METRIK
-    # =====================================
+accuracy = accuracy_score(
+    y_test,
+    y_pred
+)
 
-    accuracy = accuracy_score(
+precision = precision_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+recall = recall_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+f1 = f1_score(
+    y_test,
+    y_pred,
+    zero_division=0
+)
+
+print("\n===== HASIL EVALUASI =====")
+
+print(f"Accuracy  : {accuracy:.4f}")
+print(f"Precision : {precision:.4f}")
+print(f"Recall    : {recall:.4f}")
+print(f"F1 Score  : {f1:.4f}")
+
+print("\n===== CLASSIFICATION REPORT =====")
+
+print(
+    classification_report(
         y_test,
         y_pred
     )
-
-    precision = precision_score(
-        y_test,
-        y_pred,
-        zero_division=0
-    )
-
-    recall = recall_score(
-        y_test,
-        y_pred,
-        zero_division=0
-    )
-
-    f1 = f1_score(
-        y_test,
-        y_pred,
-        zero_division=0
-    )
-
-    # =====================================
-    # LOG PARAMETER
-    # =====================================
-
-    mlflow.log_param(
-        "n_estimators",
-        100
-    )
-
-    # =====================================
-    # LOG METRIC
-    # =====================================
-
-    mlflow.log_metric(
-        "accuracy",
-        accuracy
-    )
-
-    mlflow.log_metric(
-        "precision",
-        precision
-    )
-
-    mlflow.log_metric(
-        "recall",
-        recall
-    )
-
-    mlflow.log_metric(
-        "f1_score",
-        f1
-    )
-
-    # =====================================
-    # LOG MODEL KE MLFLOW
-    # =====================================
-
-    mlflow.sklearn.log_model(
-        model,
-        "random_forest_model"
-    )
-
-    # =====================================
-    # SIMPAN MODEL LOKAL
-    # UNTUK BUILD DOCKER
-    # =====================================
-
-    if os.path.exists("model"):
-        shutil.rmtree("model")
-
-    mlflow.sklearn.save_model(
-        sk_model=model,
-        path="model"
-    )
-
-    print("Model berhasil disimpan ke folder 'model'")
-
-    # =====================================
-    # CLASSIFICATION REPORT
-    # =====================================
-
-    report = classification_report(
-        y_test,
-        y_pred
-    )
-
-    with open(
-        "classification_report.txt",
-        "w"
-    ) as f:
-        f.write(report)
-
-    mlflow.log_artifact(
-        "classification_report.txt"
-    )
-
-    # =====================================
-    # HASIL EVALUASI
-    # =====================================
-
-    print("\n===== HASIL EVALUASI =====")
-
-    print(
-        f"Accuracy  : {accuracy:.4f}"
-    )
-
-    print(
-        f"Precision : {precision:.4f}"
-    )
-
-    print(
-        f"Recall    : {recall:.4f}"
-    )
-
-    print(
-        f"F1 Score  : {f1:.4f}"
-    )
+)
 
 print("\nTraining selesai")
